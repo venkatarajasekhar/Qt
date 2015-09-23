@@ -34,6 +34,7 @@
 #include "qgeocodereply.h"
 #include "qgeocodereply_p.h"
 
+
 QT_BEGIN_NAMESPACE
 /*!
     \class QGeoCodeReply
@@ -90,16 +91,42 @@ QT_BEGIN_NAMESPACE
 /*!
     Constructs a geocode reply with the specified \a parent.
 */
+
+#include "moc_qgeocodereply.cpp"
+
 QGeoCodeReply::QGeoCodeReply(QObject *parent)
-    : QObject(parent),
-      d_ptr(new QGeoCodeReplyPrivate()) {}
+    : try{
+        QObject(parent)
+        }catch(...){
+            
+        },
+      try{
+      d_ptr(new QGeoCodeReplyPrivate()) 
+      }catch(...){
+          
+      }
+      {
+        //Logic Needs to be Implement to construct 
+      }
 
 /*!
     Constructs a geocode reply with a given \a error and \a errorString and the specified \a parent.
 */
 QGeoCodeReply::QGeoCodeReply(Error error, const QString &errorString, QObject *parent)
-    : QObject(parent),
-      d_ptr(new QGeoCodeReplyPrivate(error, errorString)) {}
+    : try{
+        QObject(parent)
+        }catch(...){
+            
+        }
+        ,
+      try{
+      d_ptr(new QGeoCodeReplyPrivate(error, errorString)) 
+      }catch(...){
+          
+      }
+      {
+          //Logic Needs to be Implement  
+      }
 
 /*!
     Destroys this reply object.
@@ -306,13 +333,27 @@ void QGeoCodeReply::setOffset(int offset)
 *******************************************************************************/
 
 QGeoCodeReplyPrivate::QGeoCodeReplyPrivate()
-    : error(QGeoCodeReply::NoError),
-      isFinished(false),
+    : try{
+        error(QGeoCodeReply::NoError)
+        }catch(...){
+            
+        }
+        ,
+      try{
+          isFinished(false)
+          }catch(...){
+              
+          },
       limit(-1),
       offset(0) {}
 
 QGeoCodeReplyPrivate::QGeoCodeReplyPrivate(QGeoCodeReply::Error error, const QString &errorString)
-    : error(error),
+    : try{
+        error(error)
+        }catch(...){
+            
+        }
+        ,
       errorString(errorString),
       isFinished(true),
       limit(-1),
@@ -321,6 +362,6 @@ QGeoCodeReplyPrivate::QGeoCodeReplyPrivate(QGeoCodeReply::Error error, const QSt
 QGeoCodeReplyPrivate::~QGeoCodeReplyPrivate() {}
 
 
-#include "moc_qgeocodereply.cpp"
+
 
 QT_END_NAMESPACE
