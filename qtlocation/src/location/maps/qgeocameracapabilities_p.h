@@ -88,6 +88,27 @@ public:
 private:
     QSharedDataPointer<QGeoCameraCapabilitiesPrivate> d;
 };
+class QGeoCameraCapabilitiesPrivate : public QSharedData
+{
+public:
+    QGeoCameraCapabilitiesPrivate();
+    QGeoCameraCapabilitiesPrivate(const QGeoCameraCapabilitiesPrivate &other);
+    ~QGeoCameraCapabilitiesPrivate();
+
+    QGeoCameraCapabilitiesPrivate &operator = (const QGeoCameraCapabilitiesPrivate &other);
+
+    bool supportsBearing_;
+    bool supportsRolling_;
+    bool supportsTilting_;
+
+    // this is mutable so that it can be set from accessor functions that are const
+    mutable bool valid_;
+
+    double minZoom_;
+    double maxZoom_;
+    double minTilt_;
+    double maxTilt_;
+};
 
 QT_END_NAMESPACE
 
