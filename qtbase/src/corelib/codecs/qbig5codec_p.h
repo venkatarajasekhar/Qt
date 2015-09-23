@@ -39,8 +39,8 @@
 #define QBIG5CODEC_P_H
 
 //
-//  W A R N I N G
-//  -------------
+//  
+//  
 //
 // This file is not part of the Qt API.  It exists for the convenience
 // of other Qt classes.  This header file may change from version to
@@ -55,6 +55,16 @@
 QT_BEGIN_NAMESPACE
 
 #ifndef QT_NO_BIG_CODECS
+
+typedef struct {
+    ushort x;
+    ushort y;
+}t_B5Map;
+
+typedef struct  {
+    const B5Map * table;
+    ushort tableSize;
+}t_B5Index;
 
 class QBig5Codec : public QTextCodec {
 public:
