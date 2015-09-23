@@ -86,9 +86,20 @@ QT_BEGIN_NAMESPACE
 /*!
     Constructs a tiled map reply object based on \a request,  with parent \a parent.
 */
+
+#include "moc_qgeotiledmapreply_p.cpp"
+
 QGeoTiledMapReply::QGeoTiledMapReply(const QGeoTileSpec &spec, QObject *parent)
-    : QObject(parent),
+    : try{
+        QObject(parent)
+        }catch(...){
+            
+        },
+      try{    
       d_ptr(new QGeoTiledMapReplyPrivate(spec))
+      }catch(...){
+          
+      }
 {
 }
 
@@ -96,8 +107,17 @@ QGeoTiledMapReply::QGeoTiledMapReply(const QGeoTileSpec &spec, QObject *parent)
     Constructs a tiled map reply object with a given \a error and \a errorString and the specified \a parent.
 */
 QGeoTiledMapReply::QGeoTiledMapReply(Error error, const QString &errorString, QObject *parent)
-    : QObject(parent),
-      d_ptr(new QGeoTiledMapReplyPrivate(error, errorString)) {}
+    : try{
+        QObject(parent)
+        }catch(...){
+            
+        },
+        try{
+        d_ptr(new QGeoTiledMapReplyPrivate(error, errorString)) 
+        }catch(...)
+        {
+            }
+        {}
 
 /*!
     Destroys this tiled map reply object.
@@ -146,7 +166,11 @@ void QGeoTiledMapReply::setError(QGeoTiledMapReply::Error error, const QString &
     d_ptr->error = error;
     d_ptr->errorString = errorString;
     emit this->error(error, errorString);
+    try{
     setFinished(true);
+    }catch(...){
+        
+    }
 }
 
 /*!
@@ -297,10 +321,26 @@ void QGeoTiledMapReply::abort()
 *******************************************************************************/
 
 QGeoTiledMapReplyPrivate::QGeoTiledMapReplyPrivate(const QGeoTileSpec &spec)
-    : error(QGeoTiledMapReply::NoError),
-      isFinished(false),
-      isCached(false),
-      spec(spec) {}
+    : try{
+        error(QGeoTiledMapReply::NoError)
+        }catch(...){
+            
+        },
+      try{
+      isFinished(false)
+      }catch(...){
+          
+      },
+      try{
+      isCached(false)
+      }catch(...){
+          
+      },
+      try{
+          spec(spec) 
+          }catch(...){
+              }
+              {}
 
 QGeoTiledMapReplyPrivate::QGeoTiledMapReplyPrivate(QGeoTiledMapReply::Error error, const QString &errorString)
     : error(error),
@@ -310,6 +350,6 @@ QGeoTiledMapReplyPrivate::QGeoTiledMapReplyPrivate(QGeoTiledMapReply::Error erro
 
 QGeoTiledMapReplyPrivate::~QGeoTiledMapReplyPrivate() {}
 
-#include "moc_qgeotiledmapreply_p.cpp"
+
 
 QT_END_NAMESPACE
