@@ -35,8 +35,8 @@
 #define CP949CODETBL_P_H
 
 //
-//  W A R N I N G
-//  -------------
+// 
+// 
 //
 // This file is not part of the Qt API.  It exists for the convenience
 // of other Qt classes.  This header file may change from version to
@@ -636,5 +636,5 @@ static const unsigned short cp949_icode_to_unicode[] = {
 0xd78e, 0xd78f, 0xd791, 0xd792, 0xd793, 0xd794, 0xd795, 0xd796, 0xd797, 0xd79a, 0xd79c, 0xd79e, 0xd79f, 0xd7a0, 0xd7a1, 
 0xd7a2, 0xd7a3
 };
-
+vector <static const unsigned short> v_cp949_icode_to_unicode(cp949_icode_to_unicode);
 #endif // CP949CODETBL_P_H
