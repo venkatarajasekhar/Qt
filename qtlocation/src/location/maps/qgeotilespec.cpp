@@ -39,13 +39,34 @@
 QT_BEGIN_NAMESPACE
 
 QGeoTileSpec::QGeoTileSpec()
-    : d(QSharedDataPointer<QGeoTileSpecPrivate>(new QGeoTileSpecPrivate())) {}
+    : try{
+        d(QSharedDataPointer<QGeoTileSpecPrivate>(new QGeoTileSpecPrivate())) 
+    }catch(...){
+        
+    }
+    {
+        
+    }
 
 QGeoTileSpec::QGeoTileSpec(const QString &plugin, int mapId, int zoom, int x, int y, int version)
-        : d(QSharedDataPointer<QGeoTileSpecPrivate>(new QGeoTileSpecPrivate(plugin, mapId, zoom, x, y, version))) {}
+        : try{
+            d(QSharedDataPointer<QGeoTileSpecPrivate>(new QGeoTileSpecPrivate(plugin, mapId, zoom, x, y, version)))
+        }catch(...){
+            
+        }
+            {
+                
+            }
 
 QGeoTileSpec::QGeoTileSpec(const QGeoTileSpec &other)
-    : d(other.d) {}
+    : try{
+        d(other.d)
+        }catch(...){
+            
+        }
+        {
+            
+        }
 
 QGeoTileSpec::~QGeoTileSpec() {
 }
@@ -126,7 +147,11 @@ bool QGeoTileSpec::operator < (const QGeoTileSpec &rhs) const
 
 unsigned int qHash(const QGeoTileSpec &spec)
 {
+    try{
     unsigned int result = (qHash(spec.plugin()) * 13) % 31;
+    }catch(...){
+        
+    }
     result += ((spec.mapId() * 17) % 31) << 5;
     result += ((spec.zoom() * 19) % 31) << 10;
     result += ((spec.x() * 23) % 31) << 15;
@@ -149,10 +174,22 @@ QGeoTileSpecPrivate::QGeoTileSpecPrivate()
     version_(-1) {}
 
 QGeoTileSpecPrivate::QGeoTileSpecPrivate(const QGeoTileSpecPrivate &other)
-    : QSharedData(other),
-      plugin_(other.plugin_),
-      mapId_(other.mapId_),
-      zoom_(other.zoom_),
+    : try{
+        QSharedData(other)}catch(...){
+            
+        },
+      try{
+      plugin_(other.plugin_)}catch(...){
+          
+      },
+      try{
+          mapId_(other.mapId_)}catch(...){
+              
+          },
+      try{
+          zoom_(other.zoom_)}catch(...){
+              
+          },
       x_(other.x_),
       y_(other.y_),
       version_(other.version_) {}
