@@ -64,11 +64,11 @@ class Q_LOCATION_EXPORT QGeoTiledMappingManagerEngine : public QGeoMappingManage
     Q_OBJECT
 
 public:
-    enum CacheArea {
+    typedef enum class {
         DiskCache = 0x01,
         MemoryCache = 0x02,
         AllCaches = 0xFF
-    };
+    }T_CacheArea;
     Q_DECLARE_FLAGS(CacheAreas, CacheArea)
 
     explicit QGeoTiledMappingManagerEngine(QObject *parent = 0);
