@@ -88,6 +88,24 @@ private:
     QSharedDataPointer<QGeoCameraDataPrivate> d;
 };
 
+class QGeoCameraDataPrivate : public QSharedData
+{
+public:
+    QGeoCameraDataPrivate();
+    QGeoCameraDataPrivate(const QGeoCameraDataPrivate &rhs);
+
+    QGeoCameraDataPrivate &operator = (const QGeoCameraDataPrivate &rhs);
+
+    bool operator == (const QGeoCameraDataPrivate &rhs) const;
+
+    QGeoCoordinate center_;
+    double bearing_;
+    double tilt_;
+    double roll_;
+    double zoomLevel_;
+};
+
+
 QT_END_NAMESPACE
 
 Q_DECLARE_METATYPE(QGeoCameraData)
