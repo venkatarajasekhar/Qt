@@ -35,8 +35,8 @@
 #define QGEOTILEDMAPREPLY_H
 
 //
-//  W A R N I N G
-//  -------------
+// 
+//  
 //
 // This file is not part of the Qt API.  It exists purely as an
 // implementation detail.  This header file may change from version to
@@ -59,12 +59,12 @@ class Q_LOCATION_EXPORT QGeoTiledMapReply : public QObject
     Q_OBJECT
 
 public:
-    enum Error {
+    typedef enum {
         NoError,
         CommunicationError,
         ParseError,
         UnknownError
-    };
+    }T_Error;
 
     QGeoTiledMapReply(const QGeoTileSpec &spec, QObject *parent = 0);
     QGeoTiledMapReply(Error error, const QString &errorString, QObject *parent = 0);
