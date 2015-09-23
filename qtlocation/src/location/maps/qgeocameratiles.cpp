@@ -55,74 +55,12 @@ QT_BEGIN_NAMESPACE
 // #define PREFETCH_NEIGHBOUR_LAYER
 #define PREFETCH_TWO_NEIGHBOUR_LAYERS
 
-struct Frustum
-{
-    QDoubleVector3D topLeftNear;
-    QDoubleVector3D topLeftFar;
-    QDoubleVector3D topRightNear;
-    QDoubleVector3D topRightFar;
-    QDoubleVector3D bottomLeftNear;
-    QDoubleVector3D bottomLeftFar;
-    QDoubleVector3D bottomRightNear;
-    QDoubleVector3D bottomRightFar;
-};
-
-typedef QVector<QDoubleVector3D> PolygonVector;
-
-class QGeoCameraTilesPrivate
-{
-public:
-    QGeoCameraTilesPrivate();
-    ~QGeoCameraTilesPrivate();
-
-    QString pluginString_;
-    QGeoMapType mapType_;
-    int mapVersion_;
-    QGeoCameraData camera_;
-    QSize screenSize_;
-    int tileSize_;
-    int maxZoom_;
-    QSet<QGeoTileSpec> tiles_;
-
-    int intZoomLevel_;
-    int sideLength_;
-
-    void updateMetadata();
-    void updateGeometry(double viewExpansion = 1.0);
-
-    Frustum frustum(double fieldOfViewGradient) const;
-
-    class LengthSorter
-    {
-    public:
-        QDoubleVector3D base;
-        bool operator()(const QDoubleVector3D &lhs, const QDoubleVector3D &rhs)
-        {
-            return (lhs - base).lengthSquared() < (rhs - base).lengthSquared();
-        }
-    };
-
-    void appendZIntersects(const QDoubleVector3D &start, const QDoubleVector3D &end, double z, QVector<QDoubleVector3D> &results) const;
-    PolygonVector frustumFootprint(const Frustum &frustum) const;
-
-    QPair<PolygonVector, PolygonVector> splitPolygonAtAxisValue(const PolygonVector &polygon, int axis, double value) const;
-    QPair<PolygonVector, PolygonVector> clipFootprintToMap(const PolygonVector &footprint) const;
-
-    QList<QPair<double, int> > tileIntersections(double p1, int t1, double p2, int t2) const;
-    QSet<QGeoTileSpec> tilesFromPolygon(const PolygonVector &polygon) const;
-
-    struct TileMap
-    {
-        TileMap();
-
-        void add(int tileX, int tileY);
-
-        QMap<int, QPair<int, int> > data;
-    };
-};
-
 QGeoCameraTiles::QGeoCameraTiles()
-    : d_ptr(new QGeoCameraTilesPrivate()) {}
+    : try{
+        d_ptr(new QGeoCameraTilesPrivate()) {}
+    }catch(...){
+        
+    }
 
 QGeoCameraTiles::~QGeoCameraTiles()
 {
@@ -191,7 +129,11 @@ void QGeoCameraTiles::findPrefetchTiles()
 
 void QGeoCameraTiles::setCamera(const QGeoCameraData &camera)
 {
+    try{
     Q_D(QGeoCameraTiles);
+    }catch(...){
+        
+    }
 
     if (d->camera_ == camera)
         return;
@@ -199,9 +141,16 @@ void QGeoCameraTiles::setCamera(const QGeoCameraData &camera)
 
     d->intZoomLevel_ = static_cast<int>(std::floor(d->camera_.zoomLevel()));
     d->sideLength_ = 1 << d->intZoomLevel_;
-
+    try{
     d->tiles_.clear();
+    }catch(...){
+        
+    }
+    try{
     d->updateGeometry();
+    }catch(...){
+        
+    }
 }
 
 void QGeoCameraTiles::setScreenSize(const QSize &size)
@@ -212,8 +161,16 @@ void QGeoCameraTiles::setScreenSize(const QSize &size)
         return;
 
     d->screenSize_ = size;
+   try{
     d->tiles_.clear();
+    }catch(...){
+        
+    }
+    try{
     d->updateGeometry();
+    }catch(...){
+        
+    }
 }
 
 void QGeoCameraTiles::setPluginString(const QString &pluginString)
@@ -224,7 +181,11 @@ void QGeoCameraTiles::setPluginString(const QString &pluginString)
         return;
 
     d->pluginString_ = pluginString;
+    try{
     d->updateMetadata();
+    }catch(...){
+        
+    }
 }
 
 void QGeoCameraTiles::setMapType(const QGeoMapType &mapType)
@@ -235,7 +196,12 @@ void QGeoCameraTiles::setMapType(const QGeoMapType &mapType)
         return;
 
     d->mapType_ = mapType;
+    
+    try{
     d->updateMetadata();
+    }catch(...){
+        
+    }
 }
 
 void QGeoCameraTiles::setMapVersion(const int mapVersion)
@@ -246,7 +212,11 @@ void QGeoCameraTiles::setMapVersion(const int mapVersion)
         return;
 
     d->mapVersion_ = mapVersion;
+   try{
     d->updateMetadata();
+    }catch(...){
+        
+    }
 }
 
 void QGeoCameraTiles::setTileSize(int tileSize)
@@ -257,8 +227,16 @@ void QGeoCameraTiles::setTileSize(int tileSize)
         return;
 
     d->tileSize_ = tileSize;
+    try{
     d->tiles_.clear();
+    }catch(...){
+        
+    }
+    try{
     d->updateGeometry();
+    }catch(...){
+        
+    }
 }
 
 int QGeoCameraTiles::tileSize() const
@@ -275,8 +253,16 @@ void QGeoCameraTiles::setMaximumZoomLevel(int maxZoom)
         return;
 
     d->maxZoom_ = maxZoom;
+    try{
     d->tiles_.clear();
+    }catch(...){
+        
+    }
+    try{
     d->updateGeometry();
+    }catch(...){
+        
+    }
 }
 
 QSet<QGeoTileSpec> QGeoCameraTiles::tiles() const
@@ -336,10 +322,16 @@ Frustum QGeoCameraTilesPrivate::frustum(double fieldOfViewGradient) const
 {
     QDoubleVector3D center = sideLength_ * QGeoProjection::coordToMercator(camera_.center());
     center.setZ(0.0);
-
+    try{ 
     double f = qMin(screenSize_.width(), screenSize_.height()) / (1.0 * tileSize_);
-
+    }catch(...){
+        
+    }
+    try{
     double z = std::pow(2.0, camera_.zoomLevel() - intZoomLevel_);
+    }catch(...){
+        
+    }
 
     double altitude = f / (2.0 * z);
     QDoubleVector3D eye = center;
@@ -427,7 +419,11 @@ template <typename RandomAccessIterator, typename LessThan>
 inline void localqSort(RandomAccessIterator start, RandomAccessIterator end, LessThan lessThan)
 {
     if (start != end)
+        try{
         localqSortHelper(start, end, *start, lessThan);
+        }catch(...){
+            
+        }
 }
 
 template <typename RandomAccessIterator, typename T, typename LessThan>
@@ -490,13 +486,31 @@ PolygonVector QGeoCameraTilesPrivate::frustumFootprint(const Frustum &frustum) c
 {
     PolygonVector points;
     points.reserve(24);
-
+    try{
     appendZIntersects(frustum.topLeftNear, frustum.topLeftFar, 0.0, points);
+    }catch(...){
+        
+    }
+    try{
     appendZIntersects(frustum.topRightNear, frustum.topRightFar, 0.0, points);
+    }catch(...){
+        
+    }
+    try{
     appendZIntersects(frustum.bottomLeftNear, frustum.bottomLeftFar, 0.0, points);
+    }catch(...){
+        
+    }
+    try{
     appendZIntersects(frustum.bottomRightNear, frustum.bottomRightFar, 0.0, points);
-
+    }catch(...){
+        
+    }
+    try{
     appendZIntersects(frustum.topLeftNear, frustum.bottomLeftNear, 0.0, points);
+    }catch(...){
+        
+    }
     appendZIntersects(frustum.bottomLeftNear, frustum.bottomRightNear, 0.0, points);
     appendZIntersects(frustum.bottomRightNear, frustum.topRightNear, 0.0, points);
     appendZIntersects(frustum.topRightNear, frustum.topLeftNear, 0.0, points);
@@ -943,12 +957,20 @@ QSet<QGeoTileSpec> QGeoCameraTilesPrivate::tilesFromPolygon(const PolygonVector 
             QPair<double, int> nextY = yIntersects.first();
             if (nextX.first < nextY.first) {
                 x = nextX.second;
+                try{
                 map.add(x, y);
+                }catch(...){
+                    
+                }
                 xIntersects.removeFirst();
 
             } else if (nextX.first > nextY.first) {
                 y = nextY.second;
+                try{
                 map.add(x, y);
+                }catch(...){
+                    
+                }
                 yIntersects.removeFirst();
 
             } else {
@@ -991,7 +1013,11 @@ QSet<QGeoTileSpec> QGeoCameraTilesPrivate::tilesFromPolygon(const PolygonVector 
         int minX = i->first;
         int maxX = i->second;
         for (int x = minX; x <= maxX; ++x) {
+            try{
             results.insert(QGeoTileSpec(pluginString_, mapType_.mapId(), z, x, y, mapVersion_));
+            }catch(...){
+                
+            }
         }
     }
 
