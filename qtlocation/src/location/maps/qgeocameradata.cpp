@@ -41,24 +41,6 @@
 #include <cmath>
 
 QT_BEGIN_NAMESPACE
-
-class QGeoCameraDataPrivate : public QSharedData
-{
-public:
-    QGeoCameraDataPrivate();
-    QGeoCameraDataPrivate(const QGeoCameraDataPrivate &rhs);
-
-    QGeoCameraDataPrivate &operator = (const QGeoCameraDataPrivate &rhs);
-
-    bool operator == (const QGeoCameraDataPrivate &rhs) const;
-
-    QGeoCoordinate center_;
-    double bearing_;
-    double tilt_;
-    double roll_;
-    double zoomLevel_;
-};
-
 QGeoCameraDataPrivate::QGeoCameraDataPrivate()
     : QSharedData(),
       center_(-27.5, 153),
