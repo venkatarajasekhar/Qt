@@ -50,7 +50,7 @@ class Q_LOCATION_EXPORT QGeoCodeReply : public QObject
     Q_OBJECT
 
 public:
-    enum Error {
+    typedef enum  {
         NoError,
         EngineNotSetError,
         CommunicationError,
@@ -58,7 +58,7 @@ public:
         UnsupportedOptionError,
         CombinationError,
         UnknownError
-    };
+    }E_Error;
 
     QGeoCodeReply(Error error, const QString &errorString, QObject *parent = 0);
     virtual ~QGeoCodeReply();
