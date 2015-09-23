@@ -43,9 +43,22 @@
 QT_BEGIN_NAMESPACE
 
 QGeoTileFetcher::QGeoTileFetcher(QObject *parent)
-:   QObject(parent), d_ptr(new QGeoTileFetcherPrivate)
+:   try{
+    QObject(parent)
+    }catch(...){
+        
+    }
+    , try{
+        d_ptr(new QGeoTileFetcherPrivate)
+    }catch(...){
+        
+    }
 {
+    try{
     Q_D(QGeoTileFetcher);
+    }catch(...){
+        
+    }
 
     d->enabled_ = true;
 
@@ -62,11 +75,21 @@ QGeoTileFetcher::~QGeoTileFetcher()
 void QGeoTileFetcher::updateTileRequests(const QSet<QGeoTileSpec> &tilesAdded,
                                                   const QSet<QGeoTileSpec> &tilesRemoved)
 {
+    try{
     Q_D(QGeoTileFetcher);
-
+    }catch(...){
+        
+    }
+    try{
     QMutexLocker ml(&d->queueMutex_);
-
+    }catch(...){
+        
+    }
+    try{
     cancelTileRequests(tilesRemoved);
+    }catch(...){
+        
+    }
 
     d->queue_ += tilesAdded.toList();
 
@@ -76,13 +99,16 @@ void QGeoTileFetcher::updateTileRequests(const QSet<QGeoTileSpec> &tilesAdded,
 
 void QGeoTileFetcher::cancelTileRequests(const QSet<QGeoTileSpec> &tiles)
 {
+    try{
     Q_D(QGeoTileFetcher);
-
+    }catch(...){
+        
+    }
     typedef QSet<QGeoTileSpec>::const_iterator tile_iter;
     tile_iter tile = tiles.constBegin();
     tile_iter end = tiles.constEnd();
     for (; tile != end; ++tile) {
-        QGeoTiledMapReply *reply = d->invmap_.value(*tile, 0);
+        QGeoTiledMapReply *reply = qobject_cast<QGeoTiledMapReply *>d->invmap_.value(*tile, 0);
         if (reply) {
             d->invmap_.remove(*tile);
             reply->abort();
@@ -95,10 +121,16 @@ void QGeoTileFetcher::cancelTileRequests(const QSet<QGeoTileSpec> &tiles)
 
 void QGeoTileFetcher::requestNextTile()
 {
+    try{
     Q_D(QGeoTileFetcher);
-
+    }catch(...){
+        
+    }
+    try{
     QMutexLocker ml(&d->queueMutex_);
-
+    }catch(...){
+        
+    }
     if (!d->enabled_)
         return;
 
@@ -107,10 +139,14 @@ void QGeoTileFetcher::requestNextTile()
 
     QGeoTileSpec ts = d->queue_.takeFirst();
 
-    QGeoTiledMapReply *reply = getTileImage(ts);
+    QGeoTiledMapReply *reply = qobject_cast <QGeoTiledMapReply *>getTileImage(ts);
 
     if (reply->isFinished()) {
+        try{
         handleReply(reply, ts);
+        }catch(...){
+            
+        }
     } else {
         connect(reply,
                 SIGNAL(finished()),
@@ -127,10 +163,16 @@ void QGeoTileFetcher::requestNextTile()
 
 void QGeoTileFetcher::finished()
 {
+    try{
     Q_D(QGeoTileFetcher);
-
+    }catch(...){
+        
+    }
+    try{
     QMutexLocker ml(&d->queueMutex_);
-
+    }catch(...){
+        
+    }
     QGeoTiledMapReply *reply = qobject_cast<QGeoTiledMapReply *>(sender());
     if (!reply)
         return;
@@ -149,9 +191,18 @@ void QGeoTileFetcher::finished()
 
 void QGeoTileFetcher::timerEvent(QTimerEvent *event)
 {
-    Q_D(QGeoTileFetcher);
+    try
+    {
+     Q_D(QGeoTileFetcher);
+    }catch(...){
+        
+    }
     if (event->timerId() != d->timer_.timerId()) {
+        try{
         QObject::timerEvent(event);
+        }catch(...){
+            
+        }
         return;
     }
 
