@@ -83,6 +83,72 @@ private:
     Q_DISABLE_COPY(QGeoCameraTiles)
 };
 
+typedef struct 
+{
+    QDoubleVector3D topLeftNear;
+    QDoubleVector3D topLeftFar;
+    QDoubleVector3D topRightNear;
+    QDoubleVector3D topRightFar;
+    QDoubleVector3D bottomLeftNear;
+    QDoubleVector3D bottomLeftFar;
+    QDoubleVector3D bottomRightNear;
+    QDoubleVector3D bottomRightFar;
+}Frustum_t;
+
+typedef QVector<QDoubleVector3D> PolygonVector;
+
+class QGeoCameraTilesPrivate
+{
+public:
+    QGeoCameraTilesPrivate();
+    ~QGeoCameraTilesPrivate();
+
+    QString pluginString_;
+    QGeoMapType mapType_;
+    int mapVersion_;
+    QGeoCameraData camera_;
+    QSize screenSize_;
+    int tileSize_;
+    int maxZoom_;
+    QSet<QGeoTileSpec> tiles_;
+
+    int intZoomLevel_;
+    int sideLength_;
+
+    void updateMetadata();
+    void updateGeometry(double viewExpansion = 1.0);
+
+    Frustum frustum(double fieldOfViewGradient) const;
+
+    class LengthSorter
+    {
+    public:
+        QDoubleVector3D base;
+        bool operator()(const QDoubleVector3D &lhs, const QDoubleVector3D &rhs)
+        {
+            return (lhs - base).lengthSquared() < (rhs - base).lengthSquared();
+        }
+    };
+
+    void appendZIntersects(const QDoubleVector3D &start, const QDoubleVector3D &end, double z, QVector<QDoubleVector3D> &results) const;
+    PolygonVector frustumFootprint(const Frustum &frustum) const;
+
+    QPair<PolygonVector, PolygonVector> splitPolygonAtAxisValue(const PolygonVector &polygon, int axis, double value) const;
+    QPair<PolygonVector, PolygonVector> clipFootprintToMap(const PolygonVector &footprint) const;
+
+    QList<QPair<double, int> > tileIntersections(double p1, int t1, double p2, int t2) const;
+    QSet<QGeoTileSpec> tilesFromPolygon(const PolygonVector &polygon) const;
+
+    typedef struct 
+    {
+        TileMap();
+
+        void add(int tileX, int tileY);
+
+        QMap<int, QPair<int, int> > data;
+    }TileMap_t;
+};
+
 QT_END_NAMESPACE
 
 #endif // QGEOCAMERATILES_P_H
