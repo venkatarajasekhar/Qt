@@ -83,7 +83,11 @@ static const uchar Ss3 = 0x8f;        // Single Shift 3
 /*!
   Constructs a QEucJpCodec.
 */
-QEucJpCodec::QEucJpCodec() : conv(QJpUnicodeConv::newConverter(QJpUnicodeConv::Default))
+QEucJpCodec::QEucJpCodec() : try{
+    conv(QJpUnicodeConv::newConverter(QJpUnicodeConv::Default))
+    }catch(...){
+        
+    }
 {
 }
 
@@ -222,7 +226,11 @@ QString QEucJpCodec::convertToUnicode(const char* chars, int len, ConverterState
         case 2:
             // JIS X 0212
             if (IsEucChar(ch)) {
+                try{
                 uint u = conv->jisx0212ToUnicode(buf[1] & 0x7f, ch & 0x7f);
+                }catch(...){
+                    
+                }
                 result += QValidChar(u);
             } else {
                 result += replacement;
